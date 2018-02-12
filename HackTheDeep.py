@@ -6,25 +6,27 @@ import itertools
 import sys
 from fuzzywuzzy import fuzz
 
+
+#Connect To Database
 conn = psycopg2.connect(
    host='amnh-map-the-collections.c1bevxdyosto.us-east-1.rds.amazonaws.com',
    dbname="map_the_collection",
    user="amnhhackthedeep",
    password="amnhhackthedeep123!")
 
+
+#Fetch Data
 cur = conn.cursor()
-#print(dir(cur))
 
 ex = cur.execute("select distinct \"Family Name in Database\" from hackathon_2018_dirty_dataset_iz order by \"Family Name in Database\" asc")
 
 nameList = cur.fetchall()
-#for i in nameList:
-#    iterator = 0
 
+
+#Compare First String In Row Against Rest Of Strings In Same Row.
+#Use Fuzzy Search To Lexically Analyse And Compare String Similarity, Use % Output To Correct Typo's  
 nameList2 = nameList
-
 nameList3 = []
-
 
 for x in nameList:
     #setrecursionlimit(58000)
@@ -37,5 +39,5 @@ for x in nameList:
     print()
 
 
-
+#Always Remember To Close Connections!
 cur.close()
